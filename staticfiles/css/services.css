@@ -1,0 +1,100 @@
+@import 'variables.css';
+
+/* Добавляем фоновый узор */
+.page-header {
+    position: relative;
+    padding: 60px 0 40px;
+    background-color: var(--light-color); /* Изменено с #f8f9fa на переменную */
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+    overflow: hidden; /* Чтобы узор не выходил за пределы */
+}
+
+.services-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/barbershop/istockphoto-904971064-612x612.jpg');
+    background-size: 300px;
+    opacity: 0.05;
+    z-index: 0;
+}
+
+.section-header {
+    position: relative; 
+    z-index: 1; /* Поднимаем над фоном */
+}
+
+
+/* Изменяем цвет для иконки */
+.razor-icon {
+    font-size: 1.5rem;
+    color: var(--primary-color); /* Изменено с #0d6efd на переменную */
+}
+
+/* Карточки услуг */
+.service-item {
+    transition: all var(--transition-speed) ease;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--card-border-radius); 
+    border: none;
+    box-shadow: var(--box-shadow);
+    height: 100%;
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+/* ... другие стили без изменений ... */
+
+/* Изменяем цвет цены на основной цвет */
+.price-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color); /* Изменено с #0d6efd на переменную */
+}
+
+/* Изменяем стиль кнопки "Подробнее" */
+.details-btn {
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+    padding: 10px;
+    background-color: var(--primary-color); 
+    border-color: var(--primary-color);
+}
+
+.details-btn:hover {
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(197, 157, 95, 0.25); /* Изменено с синего на золотистый */
+}
+
+/* CTA-секция */
+.services-cta {
+    padding: 60px 0;
+    background-color: var(--dark-color); /* Уже было верным */
+    margin-top: 40px;
+}
+
+.cta-box {
+    background: linear-gradient(45deg, #343a40, #495057); 
+    border-radius: var(--card-border-radius);
+    color: white;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+/* Можно добавить стиль заголовка CTA в фирменном стиле */
+.cta-box h3 {
+    font-family: var(--heading-font);
+    font-size: 2rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}

@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'landing' %}">
+            <i class="bi bi-scissors me-2"></i>
+            Стальная Борода
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'landing' %}">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'landing' %}#about">О нас</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'landing' %}#services">Услуги</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'landing' %}#masters">Мастера</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'landing' %}#booking">Запись</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-clipboard-check me-1"></i>Заявки
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'orders_list' %}">Все заявки</a></li>
+                        <li><a class="dropdown-item" href="{% url 'landing' %}#recent-orders">Последние заявки</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <h6 class="dropdown-header">Статусы заявок</h6>
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'orders_list' %}#new">Новые</a></li>
+                        <li><a class="dropdown-item" href="{% url 'orders_list' %}#confirmed">Подтвержденные</a></li>
+                        <li><a class="dropdown-item" href="{% url 'orders_list' %}#completed">Выполненные</a></li>
+                        <li><a class="dropdown-item" href="{% url 'orders_list' %}#cancelled">Отмененные</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

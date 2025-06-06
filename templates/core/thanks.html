@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Спасибо за заявку - Барбершоп "Стальная Борода"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/thanks.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="thanks-wrapper">
+    <div class="thanks-background"></div>
+    
+    <div class="container thanks-content">
+        <!-- Иконка успешной заявки -->
+        <div class="thanks-icon">
+            <i class="bi bi-check-circle-fill"></i>
+        </div>
+        
+        <!-- Заголовок и подзаголовок -->
+        <h1 class="thanks-title">Спасибо за вашу заявку!</h1>
+        <p class="lead thanks-subtitle">Мы получили вашу заявку и свяжемся с вами в ближайшее время для подтверждения записи.</p>
+
+        <!-- Обратный отсчет -->
+        <p class="countdown-text">Перенаправление на главную страницу через <span id="countdown" style="font-weight: 700;">10</span> секунд.</p>
+        
+        <!-- Секция преимуществ -->
+        <div class="feature-section">
+            <div class="feature-section-header">
+                <h3 class="feature-section-title">Вы не пожалеете потому что мы - это...</h3>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="card-body">
+                            <div class="feature-icon">
+                                <i class="bi bi-scissors"></i>
+                            </div>
+                            <h5 class="feature-title">Профессионализм</h5>
+                            <p class="feature-text">Наши мастера — это профессионалы своего дела с многолетним опытом.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="card-body">
+                            <div class="feature-icon">
+                                <i class="bi bi-clock"></i>
+                            </div>
+                            <h5 class="feature-title">Пунктуальность</h5>
+                            <p class="feature-text">Мы ценим ваше время и всегда принимаем клиентов точно по записи.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card text-center">
+                        <div class="card-body">
+                            <div class="feature-icon">
+                                <i class="bi bi-heart"></i>
+                            </div>
+                            <h5 class="feature-title">Забота</h5>
+                            <p class="feature-text">Мы заботимся о каждом клиенте и стремимся создать комфортную атмосферу.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+
+
+        <!-- Информационная карточка -->
+        <div class="info-card">
+            <div class="card-body">
+                <h5 class="info-card-title">Берегите своё время</h5>
+                <p class="card-text">Чтобы не опоздать на стрижку, приходите за 5-10 минут до записи. Если нужно перенести или отменить запись, пожалуйста, сообщите нам заранее.</p>
+            </div>
+        </div>
+        
+        <!-- Кнопка возврата на главную -->
+        <div class="text-center mb-5">
+            <a href="{% url 'landing' %}" class="btn return-button">Вернуться на главную</a>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript для обратного отсчета -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var countdown = 10;
+        var countdownElement = document.getElementById('countdown');
+        var countdownInterval = setInterval(function() {
+            countdown--;
+            countdownElement.textContent = countdown;
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                window.location.href = "{% url 'landing' %}";
+            }
+        }, 1000);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Создание новой услуги - Барбершоп "Стальная Борода"{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Добавление новой услуги</h4>
+                </div>
+                <div class="card-body">
+                    {% if error_message %}
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>{{ error_message }}
+                    </div>
+                    {% endif %}
+                    
+                    {% if success_message %}
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle me-2"></i>{{ success_message }}
+                    </div>
+                    {% endif %}
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Название услуги*</label>
+                            <input type="text" class="form-control" id="name" name="name" required 
+                                value="{{ form_data.name|default:'' }}" placeholder="Например: Мужская стрижка">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Описание</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" 
+                                placeholder="Подробное описание услуги...">{{ form_data.description|default:'' }}</textarea>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="price" class="form-label">Цена (руб.)*</label>
+                                <input type="number" step="0.01" class="form-control" id="price" name="price" required 
+                                    value="{{ form_data.price|default:'' }}" placeholder="Например: 1200.00">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="duration" class="form-label">Длительность (мин.)*</label>
+                                <input type="number" class="form-control" id="duration" name="duration" required 
+                                    value="{{ form_data.duration|default:'' }}" placeholder="Например: 30">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="is_popular" name="is_popular" 
+                                {% if form_data.is_popular %}checked{% endif %}>
+                            <label class="form-check-label" for="is_popular">Популярная услуга</label>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Изображение</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'landing' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Назад
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-plus-circle me-2"></i>Создать услугу
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

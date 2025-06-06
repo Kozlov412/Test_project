@@ -1,0 +1,51 @@
+<div class="card order-card status-{{ order.status }} mb-3">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8">
+                <h5 class="card-title">{{ order.client_name }}</h5>
+                <p class="card-text"><strong>Телефон:</strong> {{ order.phone }}</p>
+                <p class="card-text"><strong>Дата записи:</strong> {{ order.appointment_date|date:"d.m.Y H:i" }}</p>
+                <p class="card-text"><strong>Услуги:</strong> 
+                    {% for service in order.services.all %}
+                        {% if not forloop.last %}
+                            {{ service.name }},
+                        {% else %}
+                            {{ service.name }}
+                        {% endif %}
+                    {% empty %}
+                        Услуги не выбраны
+                    {% endfor %}
+                </p>
+                <p class="card-text"><strong>Мастер:</strong> 
+                    {% if order.master %}
+                        {{ order.master.name }}
+                    {% else %}
+                        Не назначен
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <span class="badge status-{{ order.status }} mb-3">
+                    {% if order.status == 'not_approved' %}
+                        Не подтвержден
+                    {% elif order.status == 'approved' %}
+                        Подтвержден
+                    {% elif order.status == 'in_progress' %}
+                        В процессе
+                    {% elif order.status == 'completed' %}
+                        Выполнен
+                    {% elif order.status == 'cancelled' %}
+                        Отменен
+                    {% else %}
+                        {{ order.status }}
+                    {% endif %}
+                </span>
+                <div>
+                    <a href="{% url 'order_detail' order.id %}" class="btn btn-primary">
+                        <i class="bi bi-eye-fill me-1"></i> Детали
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

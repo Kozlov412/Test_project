@@ -1,0 +1,24 @@
+:root {
+    /* Цветовая палитра */
+    --primary-color: #c59d5f;     /* Золотисто-коричневый */
+    --primary-color-dark: #b38d42; /* Темный вариант основного цвета */
+    --dark-color: #212529;        /* Темно-серый / почти черный */
+    --light-color: #f9f7f2;       /* Светло-бежевый */
+    --gray-color: #6c757d;        /* Серый */
+    --light-gray: #f8f9fa;        /* Светло-серый */
+    
+    /* Шрифты */
+    --heading-font: 'Bebas Neue', sans-serif;
+    --subheading-font: 'Playfair Display', serif;
+    --accent-font: 'Rajdhani', sans-serif;
+    --body-font: 'Montserrat', sans-serif;
+    
+    /* Размеры и отступы */
+    --section-padding: 100px 0;
+    --card-border-radius: 10px;
+    --box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    --box-shadow-hover: 0 10px 25px rgba(0,0,0,0.15);
+    
+    /* Эффекты */
+    --transition-speed: 0.3s;
+}

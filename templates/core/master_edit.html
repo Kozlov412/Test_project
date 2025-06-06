@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if master.id %}Редактирование{% else %}Добавление{% endif %} мастера - Барбершоп "Стальная Борода"{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% if master.id %}Редактирование{% else %}Добавление{% endif %} мастера</h4>
+                </div>
+                <div class="card-body">
+                    {% if error_message %}
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>{{ error_message }}
+                    </div>
+                    {% endif %}
+                    
+                    {% if success_message %}
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle me-2"></i>{{ success_message }}
+                    </div>
+                    {% endif %}
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Имя мастера*</label>
+                            <input type="text" class="form-control" id="name" name="name" required 
+                                value="{{ form_data.name|default:master.name }}" placeholder="Например: Александр Иванов">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Телефон*</label>
+                            <input type="text" class="form-control" id="phone" name="phone" required 
+                                value="{{ form_data.phone|default:master.phone }}" placeholder="+7 (999) 123-45-67">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Адрес*</label>
+                            <input type="text" class="form-control" id="address" name="address" required 
+                                value="{{ form_data.address|default:master.address }}" placeholder="ул. Бородинская, 116">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="experience" class="form-label">Стаж работы (лет)*</label>
+                            <input type="number" class="form-control" id="experience" name="experience" required 
+                                value="{{ form_data.experience|default:master.experience }}" min="0" placeholder="5">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Услуги</label>
+                            <div class="row">
+                                {% for service in services %}
+                                <div class="col-md-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" 
+                                               name="services" value="{{ service.id }}" id="service{{ service.id }}"
+                                               {% if service in master.services.all or service.id|stringformat:"s" in form_data.services %}checked{% endif %}>
+                                        <label class="form-check-label" for="service{{ service.id }}">
+                                            {{ service.name }} - {{ service.price }} руб.
+                                        </label>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="is_active" name="is_active" 
+                                {% if form_data.is_active or master.is_active %}checked{% endif %}>
+                            <label class="form-check-label" for="is_active">Активный мастер</label>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="photo" class="form-label">Фотография</label>
+                            {% if master.photo %}
+                            <div class="mb-2">
+                                <img src="{{ master.photo.url }}" alt="{{ master.name }}" class="img-thumbnail" style="max-height: 200px;">
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="remove_photo" name="remove_photo">
+                                    <label class="form-check-label text-danger" for="remove_photo">
+                                        Удалить текущую фотографию
+                                    </label>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+                            <div class="form-text">Рекомендуемый размер: 400x400 пикселей</div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'landing' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Назад
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save me-2"></i>{% if master.id %}Сохранить{% else %}Создать{% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,387 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Оставить отзыв - Барбершоп "Стальная Борода"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/review-form.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="review-form-section">
+    <!-- Фоновый паттерн -->
+    <div class="review-form-background"></div>
+    
+    <div class="container review-form-content">
+        <!-- Заголовок страницы -->
+        <div class="section-header">
+            <h1 class="section-title">Оставить отзыв</h1>
+            <div class="title-decoration">
+                <span><i class="bi bi-scissors"></i></span>
+            </div>
+            <p class="section-subtitle">Поделитесь своими впечатлениями о нашем сервисе</p>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="review-card">
+                    <div class="review-card-header">
+                        <h4 class="mb-0">Форма отзыва</h4>
+                    </div>
+                    <div class="review-card-body">
+                        <form method="post" action="{% url 'create_review' %}" enctype="multipart/form-data" id="review-form">
+                            {% csrf_token %}
+
+                            <!-- Имя клиента -->
+                            <div class="mb-4">
+                                <label for="{{ form.client_name.id_for_label }}" class="form-label">
+                                    {{ form.client_name.label }}*
+                                </label>
+                                {{ form.client_name }}
+                                {% if form.client_name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.client_name.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Выбор мастера -->
+                            <div class="mb-4">
+                                <label for="{{ form.master.id_for_label }}" class="form-label">
+                                    {{ form.master.label }}*
+                                </label>
+                                {{ form.master }}
+                                {% if form.master.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.master.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Информация о мастере (будет загружаться через AJAX) -->
+                            <div id="master-info" class="mb-4"></div>
+
+                            <!-- Звездочный рейтинг -->
+                            <div class="mb-4">
+                                <label class="form-label">Ваша оценка*</label>
+                                <div class="star-rating">
+                                    <div class="d-flex">
+                                        <i class="bi bi-star fs-3 me-2" data-rating="1"></i>
+                                        <i class="bi bi-star fs-3 me-2" data-rating="2"></i>
+                                        <i class="bi bi-star fs-3 me-2" data-rating="3"></i>
+                                        <i class="bi bi-star fs-3 me-2" data-rating="4"></i>
+                                        <i class="bi bi-star fs-3" data-rating="5"></i>
+                                    </div>
+                                    <input type="hidden" name="rating" id="rating" value="{{ form.rating.value|default:'' }}">
+                                    {% if form.rating.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.rating.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Текст отзыва -->
+                            <div class="mb-4">
+                                <label for="{{ form.text.id_for_label }}" class="form-label">
+                                    {{ form.text.label }}*
+                                </label>
+                                {{ form.text }}
+                                {% if form.text.help_text %}
+                                    <small class="form-text text-muted">{{ form.text.help_text }}</small>
+                                {% endif %}
+                                {% if form.text.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.text.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Фотография -->
+                            <div class="mb-4">
+                                <label for="{{ form.photo.id_for_label }}" class="form-label">
+                                    {{ form.photo.label }}
+                                </label>
+                                {{ form.photo }}
+                                {% if form.photo.help_text %}
+                                    <small class="form-text text-muted">{{ form.photo.help_text }}</small>
+                                {% endif %}
+                                {% if form.photo.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.photo.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="{% url 'landing' %}" class="btn review-back-button review-button">
+                                    <i class="bi bi-arrow-left"></i> Назад
+                                </a>
+                                <button type="submit" class="btn review-submit-button review-button">
+                                    <i class="bi bi-send me-2"></i> Отправить отзыв
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    // Обработка клика по звездочке
+    document.querySelectorAll('.star-rating i').forEach(star => {
+        star.addEventListener('click', function() {
+            const rating = this.getAttribute('data-rating');
+            document.getElementById('rating').value = rating;
+            // Обновление внешнего вида звездочек
+            updateStars(rating);
+        });
+
+        // Добавляем эффект при наведении
+        star.addEventListener('mouseenter', function() {
+            const hoveredRating = this.getAttribute('data-rating');
+            previewStars(hoveredRating);
+        });
+    });
+
+    // При уходе мыши с блока звезд, восстанавливаем текущий рейтинг
+    document.querySelector('.star-rating').addEventListener('mouseleave', function() {
+        const currentRating = document.getElementById('rating').value;
+        updateStars(currentRating);
+    });
+
+    // Функция обновления отображения звездочек
+    function updateStars(rating) {
+        document.querySelectorAll('.star-rating i').forEach(star => {
+            const starValue = star.getAttribute('data-rating');
+            if (starValue <= rating) {
+                star.classList.remove('bi-star');
+                star.classList.add('bi-star-fill', 'text-warning');
+            } else {
+                star.classList.remove('bi-star-fill', 'text-warning');
+                star.classList.add('bi-star');
+            }
+        });
+    }
+
+    // Функция предварительного просмотра звездочек при наведении
+    function previewStars(rating) {
+        document.querySelectorAll('.star-rating i').forEach(star => {
+            const starValue = star.getAttribute('data-rating');
+            if (starValue <= rating) {
+                star.classList.remove('bi-star');
+                star.classList.add('bi-star-fill', 'text-warning');
+            } else {
+                star.classList.remove('bi-star-fill', 'text-warning');
+                star.classList.add('bi-star');
+            }
+        });
+    }
+
+    // Функция для получения информации о мастере и отображения карточки
+    function loadMasterInfo(masterId) {
+        if (!masterId) {
+            document.getElementById('master-info').innerHTML = '';
+            return;
+        }
+        
+        fetch(`/api/master-info/?master_id=${masterId}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                displayMasterInfo(data.master);
+            } else {
+                console.error('Ошибка:', data.error);
+                document.getElementById('master-info').innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>${data.error}
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка загрузки данных:', error);
+            document.getElementById('master-info').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Ошибка загрузки данных о мастере
+                </div>
+            `;
+        });
+    }
+
+    // AJAX-запрос для получения информации о мастере при изменении
+    document.getElementById('id_master').addEventListener('change', function() {
+        const masterId = this.value;
+        loadMasterInfo(masterId);
+    });
+
+    // Функция для отображения информации о мастере
+    function displayMasterInfo(master) {
+        const infoDiv = document.getElementById('master-info');
+        if (!infoDiv) return;
+        
+        // Очищаем предыдущую информацию
+        infoDiv.innerHTML = '';
+        
+        // Создаем карточку мастера
+        const card = document.createElement('div');
+        card.className = 'card mt-3';
+        
+        // Формируем HTML для карточки
+        let cardHTML = `
+            <div class="card-body p-3">
+                <div class="d-flex">
+        `;
+        
+        // Добавляем фото, если оно есть
+        if (master.photo) {
+            cardHTML += `
+                    <div class="me-3" style="width: 80px; height: 80px; overflow: hidden; border-radius: 50%;">
+                        <img src="${master.photo}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;" alt="${master.name}">
+                    </div>
+            `;
+        }
+        
+        // Добавляем информацию о мастере
+        cardHTML += `
+                    <div>
+                        <h5 class="card-title mb-1">${master.name}</h5>
+                        <p class="card-text small text-muted mb-2">Опыт работы: ${master.experience} 
+                        ${formatYears(master.experience)}</p>
+        `;
+        
+        // Добавляем список услуг, если они есть
+        if (master.services && master.services.length > 0) {
+            cardHTML += `<p class="card-text small">Специализация: `;
+            const serviceNames = master.services.map(s => s.name).slice(0, 3);
+            cardHTML += serviceNames.join(', ');
+            if (master.services.length > 3) {
+                cardHTML += ' и др.';
+            }
+            cardHTML += `</p>`;
+        }
+        
+        cardHTML += `
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        card.innerHTML = cardHTML;
+        infoDiv.appendChild(card);
+    }
+
+    // Функция для правильного склонения слова "год/года/лет"
+    function formatYears(years) {
+        if (years % 10 === 1 && years % 100 !== 11) {
+            return 'год';
+        } else if ([2, 3, 4].includes(years % 10) && ![12, 13, 14].includes(years % 100)) {
+            return 'года';
+        } else {
+            return 'лет';
+        }
+    }
+
+    // Основная функция валидации формы
+    function validateReviewForm() {
+        let isValid = true;
+        
+        // Проверка имени клиента
+        const nameField = document.getElementById('id_client_name');
+        if (!nameField.value.trim()) {
+            showError(nameField, 'Пожалуйста, укажите ваше имя');
+            isValid = false;
+        } else {
+            clearError(nameField);
+        }
+        
+        // Проверка текста отзыва
+        const textField = document.getElementById('id_text');
+        if (!textField.value.trim()) {
+            showError(textField, 'Пожалуйста, напишите текст отзыва');
+            isValid = false;
+        } else {
+            clearError(textField);
+        }
+        
+        // Проверка рейтинга
+        const ratingField = document.getElementById('rating');
+        if (!ratingField.value) {
+            showError(document.querySelector('.star-rating div'), 'Пожалуйста, поставьте оценку');
+            isValid = false;
+        } else {
+            clearError(document.querySelector('.star-rating div'));
+        }
+        
+        // Проверка выбора мастера
+        const masterField = document.getElementById('id_master');
+        if (!masterField.value) {
+            showError(masterField, 'Пожалуйста, выберите мастера');
+            isValid = false;
+        } else {
+            clearError(masterField);
+        }
+        
+        return isValid;
+    }
+
+    // Вспомогательные функции для валидации
+    function showError(element, message) {
+        // Очищаем предыдущую ошибку
+        clearError(element);
+        
+        // Добавляем класс is-invalid к элементу
+        element.classList.add('is-invalid');
+        
+        // Создаем элемент с сообщением об ошибке
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'invalid-feedback d-block';
+        errorDiv.textContent = message;
+        
+        // Вставляем сообщение об ошибке после элемента
+        element.parentNode.appendChild(errorDiv);
+    }
+
+    function clearError(element) {
+        // Удаляем класс is-invalid
+        element.classList.remove('is-invalid');
+        
+        // Находим и удаляем сообщение об ошибке
+        const errorDiv = element.parentNode.querySelector('.invalid-feedback');
+        if (errorDiv) {
+            errorDiv.remove();
+        }
+    }
+
+    // Подключение валидации к форме
+    document.getElementById('review-form').addEventListener('submit', function(event) {
+        if (!validateReviewForm()) {
+            event.preventDefault();
+        }
+    });
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        // Инициализация звездочного рейтинга
+        const initialRating = document.getElementById('rating').value;
+        if (initialRating) {
+            updateStars(initialRating);
+        }
+        
+        // Загрузка информации о мастере, если он выбран
+        const masterSelect = document.getElementById('id_master');
+        if (masterSelect && masterSelect.value) {
+            loadMasterInfo(masterSelect.value);
+        }
+    });
+</script>
+{% endblock %}

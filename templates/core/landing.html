@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная - Барбершоп "Стальная Борода"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/variables.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+<!-- Подключение стильных шрифтов с Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- Герой-секция -->
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Барбершоп "Стальная Борода"</h1>
+            <p class="hero-subtitle">Мы делаем стрижки с характером для мужчин с характером!</p>
+            <a href="{% url 'booking' %}" class="btn btn-hero btn-lg">Записаться сейчас</a>
+        </div>
+    </div>
+</section>
+
+<!-- О нас секция -->
+<section id="about" class="about-section">
+    <div class="barber-pattern"></div>
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">О нас</h2>
+            <div class="title-decoration">
+                <span><i class="bi bi-scissors"></i></span>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="about-content">
+                    <p class="lead-text">Барбершоп "Стальная Борода" — это не просто парикмахерская, это место, где создаются настоящие мужские образы.</p>
+                    <p>Наши мастера — профессионалы своего дела, владеющие всеми современными техниками стрижки и бритья. Мы используем только качественные материалы и инструменты, чтобы результат работы радовал вас долгое время.</p>
+                    <p>Наша миссия — сделать каждого мужчину увереннее в себе, предоставив безупречный уровень сервиса и результат, превосходящий ожидания.</p>
+                    <div class="about-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="bi bi-award"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4>Профессиональный подход</h4>
+                                <p>Мастера с опытом работы от 3 лет</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="bi bi-stars"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h4>Качественные материалы</h4>
+                                <p>Используем только лучшие бренды</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="col-lg-6">
+                    <div class="about-image-container">
+                        <img src="{% static 'img/barbershop/10273836697458326_6571.jpg' %}" alt="Интерьер барбершопа" class="about-image-full">           
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+<!-- Секция мастеров -->
+<section id="masters" class="masters-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Наши мастера</h2>
+            <div class="title-decoration">
+                <span><i class="bi bi-scissors"></i></span>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for master in masters %}
+            <div class="col">
+                <div class="master-card">
+                    <div class="master-image-wrapper">
+                        {% if master.photo %}
+                        <img src="{{ master.photo.url }}" class="master-image" alt="{{ master.name }}">
+                        {% else %}
+                        <img src="{% static 'img/masters/__1.png' %}" class="master-image" alt="{{ master.name }}">
+                        {% endif %}
+                        <div class="master-experience">
+                            {{ master.experience }} 
+                            {% with exp=master.experience %}
+                            {% if exp == 1 %}
+                                год
+                            {% elif exp == 2 or exp == 3 or exp == 4 %}
+                                года
+                            {% elif exp == 21 or exp == 31 or exp == 41 or exp == 51 or exp == 61 or exp == 71 or exp == 81 or exp == 91 %}
+                                год
+                            {% elif exp == 22 or exp == 23 or exp == 24 or exp == 32 or exp == 33 or exp == 34 or exp == 42 or exp == 43 or exp == 44 or exp == 52 or exp == 53 or exp == 54 or exp == 62 or exp == 63 or exp == 64 %}
+                                года
+                            {% else %}
+                                лет
+                            {% endif %}
+                        {% endwith %}
+                </div>
+                    </div>
+                    <div class="master-info">
+                        <h3 class="master-name">{{ master.name }}</h3>
+                        <div class="master-specialization">
+                            {% for service in master.services.all|slice:":3" %}
+                                <span class="specialization-tag">{{ service.name }}</span>
+                            {% endfor %}
+                            {% if master.services.count > 3 %}
+                                <span class="specialization-tag">и др.</span>
+                            {% endif %}
+                        </div>
+                        <div class="master-actions">
+                            <a href="{% url 'booking' %}?master_id={{ master.id }}" class="btn btn-book">Записаться</a>
+                            <a href="{% url 'create_review' %}?master_id={{ master.id }}" class="btn btn-review">
+                                <i class="bi bi-star"></i> Отзыв
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <div class="no-masters">
+                    <i class="bi bi-exclamation-circle"></i>
+                    <p>В данный момент нет активных мастеров.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Секция отзывов с функционалом "Читать полностью" -->
+<section id="reviews" class="reviews-section">
+    <div class="reviews-background"></div>
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Отзывы наших клиентов</h2>
+            <div class="title-decoration">
+                <span><i class="bi bi-scissors"></i></span>
+            </div>
+        </div>
+
+        <!-- Полностью переработанная кнопка добавления отзыва -->
+        <div class="text-center mb-5">
+            <a href="/reviews/create/" 
+               class="review-button" 
+               style="display: inline-block; 
+                      background-color: #c59d5f; 
+                      color: white; 
+                      padding: 12px 30px; 
+                      border-radius: 30px; 
+                      font-weight: 600; 
+                      text-decoration: none !important; 
+                      cursor: pointer; 
+                      position: relative; 
+                      z-index: 100;">
+                <i class="bi bi-star me-2"></i>Поделиться своим опытом
+            </a>
+        </div>
+
+        <!-- Существующие отзывы -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for review in reviews %}
+            <div class="col">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-client">
+                            <div class="client-avatar">{{ review.client_name|first|upper }}</div>
+                            <div class="client-info">
+                                <h5 class="client-name">{{ review.client_name }}</h5>
+                                <small class="review-date">{{ review.created_at|date:"d.m.Y" }}</small>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= review.rating %}
+                                <i class="bi bi-star-fill"></i>
+                                {% else %}
+                                <i class="bi bi-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Улучшенный блок для отображения текста отзыва -->
+                    <div class="review-content">
+                        <div class="review-text-short">{{ review.text|truncatechars:120 }}</div>
+                        {% if review.text|length > 120 %}
+                        <div class="review-text-full" style="display: none;">{{ review.text }}</div>
+                        <button type="button" 
+                                class="read-more-button" 
+                                onclick="toggleReview(this)" 
+                                style="color: #c59d5f; 
+                                       background: none; 
+                                       border: none; 
+                                       padding: 5px 0; 
+                                       font-size: 0.85rem; 
+                                       cursor: pointer; 
+                                       text-decoration: underline; 
+                                       display: inline-block; 
+                                       margin-top: 5px;">
+                            Читать полностью
+                        </button>
+                        {% endif %}
+                        
+                        {% if review.photo %}
+                        <div class="review-photo">
+                            <img src="{{ review.photo.url }}" alt="Фото от {{ review.client_name }}">
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Информация о мастере -->
+                    <div class="review-footer">
+                        <span class="master-badge">Мастер: <strong>{{ review.master.name }}</strong></span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <div class="no-reviews">
+                    <i class="bi bi-chat-square-text"></i>
+                    <p>Пока нет отзывов. Будьте первым, кто оставит отзыв!</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Функция для переключения полного/краткого текста отзыва
+    function toggleReview(button) {
+        const content = button.parentElement;
+        const shortText = content.querySelector('.review-text-short');
+        const fullText = content.querySelector('.review-text-full');
+        
+        if (shortText.style.display !== 'none') {
+            shortText.style.display = 'none';
+            fullText.style.display = 'block';
+            button.textContent = 'Свернуть';
+        } else {
+            shortText.style.display = 'block';
+            fullText.style.display = 'none';
+            button.textContent = 'Читать полностью';
+        }
+    }
+
+    // При загрузке документа
+    document.addEventListener('DOMContentLoaded', function() {
+        // Обработка кнопки добавления отзыва
+        document.querySelector('.review-button').addEventListener('click', function(event) {
+            // Остановить стандартную навигацию
+            event.preventDefault();
+            
+            // Получить URL из атрибута href
+            const url = this.getAttribute('href');
+            
+            // Выполнить переход программно
+            window.location.href = url;
+        });
+    });
+</script>
+{% endblock %}

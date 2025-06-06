@@ -1,0 +1,274 @@
+.thanks-wrapper {
+    position: relative;
+    background-color: var(--light-color);
+    padding: 60px 0;
+    min-height: 80vh;
+    overflow: hidden;
+}
+
+.thanks-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../img/barbershop/istockphoto-904971064-612x612.jpg");
+    background-repeat: repeat;
+    background-size: 300px;
+    opacity: 0.05;
+    z-index: 0;
+}
+
+.thanks-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.thanks-icon {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.thanks-icon i {
+    font-size: 5rem;
+    color: var(--primary-color);
+}
+
+.thanks-title {
+    font-family: var(--heading-font);
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    text-align: center;
+    color: var(--dark-color);
+    margin-bottom: 10px;
+}
+
+/* Стили для декоративного элемента с иконкой ножниц */
+.title-decoration-main {
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.title-decoration-main span {
+    display: inline-block;
+    position: relative;
+    padding: 0 15px;
+}
+
+.title-decoration-main span i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.title-decoration-main span:before,
+.title-decoration-main span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    height: 2px;
+    width: 50px;
+    background-color: var(--primary-color);
+}
+
+.title-decoration-main span:before {
+    right: 100%;
+}
+
+.title-decoration-main span:after {
+    left: 100%;
+}
+
+.thanks-subtitle {
+    font-family: var(--subheading-font);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.countdown-text {
+    text-align: center;
+    color: var(--gray-color);
+    margin-bottom: 40px;
+}
+
+.feature-section {
+    margin: 60px 0;
+}
+
+.feature-section-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.feature-section-title {
+    font-family: var(--heading-font);
+    color: var(--dark-color);
+    position: relative;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+/* Улучшенное стилевое оформление для карточек с преимуществами */
+.feature-card {
+    border-radius: var(--card-border-radius);
+    border: none;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: all var(--transition-speed) ease;
+    height: 100%;
+    background-color: white;
+    padding: 15px; /* Добавляем внутренний отступ */
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+.feature-icon {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.feature-title {
+    font-family: var(--accent-font);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+}
+
+.feature-text {
+    color: var(--gray-color);
+}
+
+/* Обертка для карточек, делаем их шире на экранах среднего размера */
+.features-row {
+    max-width: 100%;
+    margin: 0 -10px; /* Отрицательные отступы для компенсации паддинга столбцов */
+}
+
+/* Изменяем столбцы, чтобы они занимали больше места */
+.feature-column {
+    padding: 0 15px;
+}
+
+/* На мобильных устройствах оставляем полную ширину */
+@media (min-width: 768px) {
+    .feature-column {
+        flex: 0 0 33.333%;
+        max-width: 33.333%;
+    }
+}
+
+/* Добавляем больше пространства для контента карточки */
+.feature-card .card-body {
+    padding: 25px 15px;
+}
+
+/* Увеличиваем иконку */
+.feature-icon {
+    color: var(--primary-color);
+    font-size: 3rem; /* Увеличено с 2.5rem */
+    margin-bottom: 20px; /* Увеличено с 15px */
+}
+
+/* Улучшенное оформление информационной карточки */
+.info-card {
+    border: 1px solid rgba(197, 157, 95, 0.3); /* Добавляем полную видимую рамку */
+    border-left: 4px solid var(--primary-color);
+    border-radius: var(--card-border-radius);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    margin: 40px auto;
+    background-color: white;
+    max-width: 700px; /* Увеличено с 600px */
+    padding: 10px; /* Добавлен внешний паддинг */
+}
+
+.info-card .card-body {
+    padding: 20px; /* Увеличиваем внутренние отступы */
+}
+
+.info-card-title {
+    font-family: var(--subheading-font);
+    color: var(--dark-color);
+    font-weight: 600;
+    text-align: center; /* Центрируем заголовок */
+    margin-bottom: 15px; /* Добавляем отступ снизу */
+    font-size: 1.3rem; /* Увеличиваем размер шрифта */
+}
+
+.return-button {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    padding: 12px 30px;
+    transition: all var(--transition-speed) ease;
+}
+
+.return-button:hover {
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(197, 157, 95, 0.3);
+}
+
+/* Стили для декоративного элемента в секции "Вы не пожалеете" */
+.title-decoration {
+    text-align: center;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.title-decoration span {
+    display: inline-block;
+    position: relative;
+    padding: 0 15px;
+}
+
+.title-decoration span i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.title-decoration span:before,
+.title-decoration span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    height: 2px;
+    width: 50px;
+    background-color: var(--primary-color);
+}
+
+.title-decoration span:before {
+    right: 100%;
+}
+
+.title-decoration span:after {
+    left: 100%;
+}
+
+/* Добавляем медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+    .title-decoration-main span:before,
+    .title-decoration-main span:after,
+    .title-decoration span:before,
+    .title-decoration span:after {
+        width: 30px;
+    }
+    
+    .thanks-title {
+        font-size: 2rem;
+    }
+    
+    .feature-section-title {
+        font-size: 1.5rem;
+    }
+}

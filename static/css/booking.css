@@ -1,0 +1,116 @@
+@import 'variables.css';
+
+.page-header {
+    position: relative;
+    padding: 60px 0 40px;
+    background-color: var(--light-color);
+    overflow: hidden;
+    margin-bottom: 0; /* Убираем отступ снизу */
+    border-bottom: none; /* Убираем границу */
+}
+
+/* Фоновый паттерн для заголовка */
+.header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../img/barbershop/istockphoto-904971064-612x612.jpg");
+    background-repeat: repeat;
+    background-size: 300px; 
+    opacity: 0.05;
+    z-index: 0;
+}
+
+/* Стили для секции формы */
+.booking-section {
+    position: relative;
+    background-color: var(--light-color);
+    padding: 60px 0;
+    overflow: hidden;
+    margin-top: 0; /* Убираем отступ сверху */
+}
+
+/* Фоновый паттерн для секции формы */
+.booking-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../img/barbershop/istockphoto-904971064-612x612.jpg");
+    background-repeat: repeat;
+    background-size: 300px;
+    opacity: 0.05;
+    z-index: 0;
+}
+
+.booking-card {
+    border: none;
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.booking-card-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px;
+    border: none;
+}
+
+.booking-card-header h4 {
+    margin: 0;
+    font-family: var(--heading-font);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+}
+
+/* Стили для полей формы */
+.form-label {
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+.form-control:focus, 
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(197, 157, 95, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.submit-btn {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    padding: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all var(--transition-speed) ease;
+}
+
+.submit-btn:hover {
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(197, 157, 95, 0.3);
+}
+
+/* Позиционирование заголовка */
+.section-header {
+    position: relative;
+    z-index: 1;
+}
+
+/* Создаем эффект единой секции */
+.booking-wrapper {
+    background-color: var(--light-color);
+}

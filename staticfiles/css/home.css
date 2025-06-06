@@ -1,0 +1,530 @@
+@import 'variables.css';
+
+/* Герой-секция */
+.hero-section {
+    position: relative;
+    height: 85vh;
+    min-height: 600px;
+    background-image: url('../img/barbershop/main-bg-min.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    align-items: center;
+    margin-top: -1px; /* Fix potential gap */
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    text-align: center;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.hero-title {
+    font-family: var(--heading-font);
+    font-size: 4.5rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitle {
+    font-family: var(--subheading-font);
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.btn-hero {
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    transition: all var(--transition-speed) ease;
+    border-radius: 0;
+}
+
+.btn-hero:hover {
+    background-color: white;
+    color: var(--dark-color);
+    transform: translateY(-3px);
+}
+
+/* Секция О нас */
+.about-section {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--light-color);
+}
+
+.barber-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/barbershop/istockphoto-904971064-612x612.jpg');
+    background-size: 300px;
+    opacity: 0.05;
+}
+
+.about-content {
+    position: relative;
+    z-index: 1;
+}
+
+.about-features {
+    margin-top: 40px;
+}
+
+.feature-item {
+    display: flex;
+    margin-bottom: 25px;
+}
+
+.feature-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--dark-color);
+    color: var(--primary-color);
+    border-radius: 50%;
+    margin-right: 15px;
+    font-size: 1.3rem;
+}
+
+.feature-text h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.feature-text p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #666;
+}
+
+/* Изображение "О нас" */
+.about-image-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 75%; /* Соотношение сторон 4:3 */
+    overflow: hidden;
+    margin: 0 auto;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--card-border-radius);
+}
+
+.about-image-full {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Секция Мастеров */
+.masters-section {
+    position: relative;
+    background-image: url('../img/barbershop/Blog+Banner+for+Website+Content.png');
+    background-size: cover;
+}
+
+.master-card {
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    transition: all var(--transition-speed) ease;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.master-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.master-image-wrapper {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+}
+
+.master-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.5s ease;
+}
+
+.master-card:hover .master-image {
+    transform: scale(1.05);
+}
+
+.master-experience {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 5px 15px;
+    font-weight: 600;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.master-info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.master-name {
+    font-family: var(--accent-font);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+}
+
+.master-specialization {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    gap: 5px;
+}
+
+.specialization-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: #f1f1f1;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.master-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 15px;
+}
+
+.btn-book {
+    flex: 1;
+    background-color: var(--dark-color);
+    color: white;
+    padding: 10px;
+    border: none;
+    font-weight: 600;
+    transition: all var(--transition-speed) ease;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-book:hover {
+    background-color: #000;
+    color: white;
+}
+
+.btn-review {
+    flex: 1;
+    background-color: var(--light-gray);
+    color: var(--dark-color);
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    transition: all var(--transition-speed) ease;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-review:hover {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+    color: var(--dark-color);
+}
+
+.no-masters {
+    text-align: center;
+    padding: 40px;
+    background-color: var(--light-gray);
+    border-radius: var(--card-border-radius);
+}
+
+.no-masters i {
+    font-size: 3rem;
+    color: var(--gray-color);
+    margin-bottom: 15px;
+    display: block;
+}
+
+.no-masters p {
+    font-size: 1.2rem;
+    color: #495057;
+    margin: 0;
+}
+
+/* Секция Отзывов */
+.reviews-section {
+    position: relative;
+    background-color: #f8f6f3;
+    overflow-x: hidden;
+}
+
+.reviews-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/barbershop/istockphoto-904971064-612x612.jpg');
+    background-size: 300px;
+    opacity: 0.05;
+}
+
+/* Кнопка добавления отзыва */
+.review-button {
+    background-color: var(--primary-color); 
+    color: white; 
+    padding: 12px 30px; 
+    border-radius: 30px; 
+    font-weight: 600; 
+    text-decoration: none; 
+    cursor: pointer; 
+    position: relative; 
+    z-index: 100;
+    transition: all var(--transition-speed) ease;
+    display: inline-block;
+}
+
+.review-button:hover {
+    background-color: var(--primary-color-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(197, 157, 95, 0.3);
+    color: white;
+}
+
+/* Карточка отзыва */
+.review-card {
+    background-color: white;
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    height: 100%;
+    transition: all var(--transition-speed) ease;
+    position: relative;
+    display: flex; 
+    flex-direction: column;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px 20px 5px 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.review-client {
+    display: flex;
+    align-items: center;
+}
+
+.client-avatar {
+    width: 45px;
+    height: 45px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-right: 15px;
+}
+
+.client-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.client-name {
+    font-family: var(--accent-font);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+    color: #333;
+}
+
+.review-date {
+    color: #999;
+    font-size: 0.8rem;
+}
+
+.review-rating {
+    color: #FFD700;
+    font-size: 0.9rem;
+}
+
+.review-rating i {
+    margin-left: 2px;
+}
+
+.review-rating .bi-star {
+    color: #e9ecef;
+}
+
+.review-content {
+    padding: 15px 20px;
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+    flex-grow: 1;
+}
+
+.review-text-short, .review-text-full {
+    position: relative;
+    line-height: 1.6;
+}
+
+.read-more-button {
+    color: var(--primary-color);
+    background: none;
+    border: none;
+    padding: 5px 0;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: underline;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.read-more-button:hover {
+    color: var(--primary-color-dark);
+}
+
+.review-photo {
+    margin-top: 15px;
+}
+
+.review-photo img {
+    max-width: 100%;
+    border-radius: 6px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.review-footer {
+    padding: 15px 20px;
+    background-color: var(--light-gray);
+    font-size: 0.85rem;
+    margin-top: auto;
+}
+
+.master-badge {
+    background-color: #e9ecef;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+}
+
+.no-reviews {
+    text-align: center;
+    padding: 40px;
+    background-color: white;
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.no-reviews i {
+    font-size: 3rem;
+    color: var(--gray-color);
+    margin-bottom: 15px;
+    display: block;
+}
+
+.no-reviews p {
+    font-size: 1.1rem;
+    color: #495057;
+    margin: 0;
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 1199.98px) {
+    .hero-title {
+        font-size: 3.5rem;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .hero-section {
+        height: 70vh;
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .about-image-container {
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .hero-section {
+        height: 60vh;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+}

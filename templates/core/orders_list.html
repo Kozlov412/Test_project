@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+
+{% block title %}Список заявок - Барбершоп "Стальная Борода"{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">Список заявок</h1>
+    
+    <!-- Форма поиска с улучшенным автодополнением -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" action="{% url 'orders_list' %}" class="row g-3 align-items-end">
+                <div class="col-md-6">
+                    <label for="searchQuery" class="form-label">Поиск заявок</label>
+                    <input type="text" class="form-control" id="searchQuery" name="query" value="{{ search_query }}" 
+                           placeholder="Введите текст для поиска..." 
+                           autocomplete="off">
+                    
+                    <!-- Скрытые datalist для разных типов поиска -->
+                    <datalist id="nameSearchSuggestions">
+                        {% for name in unique_names %}
+                            <option value="{{ name }}"></option>
+                        {% endfor %}
+                    </datalist>
+                    
+                    <datalist id="phoneSearchSuggestions">
+                        {% for phone in unique_phones %}
+                            <option value="{{ phone }}"></option>
+                        {% endfor %}
+                    </datalist>
+                    
+                    <datalist id="commentSearchSuggestions">
+                        {% for comment in unique_comments %}
+                            <option value="{{ comment|truncatechars:30 }}"></option>
+                        {% endfor %}
+                    </datalist>
+                    
+                    <!-- Общий datalist -->
+                    <datalist id="searchSuggestions">
+                        {% for name in unique_names %}
+                            <option value="{{ name }}"></option>
+                        {% endfor %}
+                        {% for phone in unique_phones %}
+                            <option value="{{ phone }}"></option>
+                        {% endfor %}
+                        {% for comment in unique_comments %}
+                            {% if comment %}
+                            <option value="{{ comment|truncatechars:30 }}"></option>
+                            {% endif %}
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="searchName" name="name" {% if search_name %}checked{% endif %}>
+                        <label class="form-check-label" for="searchName">По имени клиента</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="searchPhone" name="phone" {% if search_phone %}checked{% endif %}>
+                        <label class="form-check-label" for="searchPhone">По телефону</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="searchComment" name="comment" {% if search_comment %}checked{% endif %}>
+                        <label class="form-check-label" for="searchComment">По комментарию</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search me-1"></i>Поиск
+                    </button>
+                    <a href="{% url 'orders_list' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle me-1"></i>Сбросить
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Вкладки со статусами -->
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Все заявки <span class="badge bg-secondary">{{ orders|length }}</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Не подтверждены <span class="badge bg-warning text-dark">{{ statuses.not_approved }}</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Подтверждены <span class="badge bg-primary">{{ statuses.approved }}</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">В процессе <span class="badge bg-info">{{ statuses.in_progress }}</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Выполнены <span class="badge bg-success">{{ statuses.completed }}</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Отменены <span class="badge bg-danger">{{ statuses.cancelled }}</span></a>
+        </li>
+    </ul>
+    
+    <!-- Список заявок -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for order in orders %}
+        <div class="col">
+            <div class="card h-100 shadow-sm status-{{ order.status }}">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Заявка #{{ order.id }}</h5>
+                    <span class="badge status-{{ order.status }}">
+                        {% if order.status == 'not_approved' %}
+                            Не подтвержден
+                        {% elif order.status == 'approved' %}
+                            Подтвержден
+                        {% elif order.status == 'in_progress' %}
+                            В процессе
+                        {% elif order.status == 'completed' %}
+                            Выполнен
+                        {% elif order.status == 'cancelled' %}
+                            Отменен
+                        {% else %}
+                            {{ order.status }}
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="card-body">
+                    <p><strong>Клиент:</strong> {{ order.client_name }}</p>
+                    <p><strong>Телефон:</strong> {{ order.phone }}</p>
+                    <p><strong>Дата:</strong> {{ order.appointment_date|date:"d.m.Y H:i" }}</p>
+                    <p><strong>Мастер:</strong>
+                        {% if order.master %}
+                            {{ order.master.name }}
+                        {% else %}
+                            Не назначен
+                        {% endif %}
+                    </p>
+                    <p><strong>Услуги:</strong> {{ order.services.all|length }}</p>
+                    {% if order.comment %}
+                    <p><strong>Комментарий:</strong> {{ order.comment|truncatechars:50 }}</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{% url 'order_detail' order.id %}" class="btn btn-outline-primary w-100">
+                        <i class="bi bi-eye-fill me-2"></i>Подробнее
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>Нет доступных заявок
+                {% if search_query %} по вашему запросу{% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Активация чекбоксов по умолчанию, если ничего не выбрано
+        const searchForm = document.querySelector('form');
+        const searchQuery = document.getElementById('searchQuery');
+        const checkboxes = searchForm.querySelectorAll('input[type="checkbox"]');
+        
+        // Функция для динамического переключения datalist
+        function updateDatalist() {
+            const nameChecked = document.getElementById('searchName').checked;
+            const phoneChecked = document.getElementById('searchPhone').checked;
+            const commentChecked = document.getElementById('searchComment').checked;
+            
+            if (nameChecked && !phoneChecked && !commentChecked) {
+                searchQuery.setAttribute('list', 'nameSearchSuggestions');
+            } else if (phoneChecked && !nameChecked && !commentChecked) {
+                searchQuery.setAttribute('list', 'phoneSearchSuggestions');
+            } else if (commentChecked && !nameChecked && !phoneChecked) {
+                searchQuery.setAttribute('list', 'commentSearchSuggestions');
+            } else {
+                searchQuery.setAttribute('list', 'searchSuggestions');
+            }
+        }
+        
+        searchQuery.addEventListener('input', function() {
+            // Проверяем, есть ли выбранные чекбоксы
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            
+            // Если нет выбранных чекбоксов, активируем поиск по имени
+            if (!anyChecked && this.value.trim() !== '') {
+                document.getElementById('searchName').checked = true;
+                updateDatalist();
+            }
+        });
+        
+        // Обработка изменений в чекбоксах
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateDatalist();
+                if (searchQuery.value.trim() !== '') {
+                    searchForm.submit();
+                }
+            });
+        });
+        
+        // Инициализация при загрузке страницы
+        updateDatalist();
+    });
+</script>
+{% endblock %}

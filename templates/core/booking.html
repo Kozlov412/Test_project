@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Запись - Барбершоп "Стальная Борода"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/booking.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Обертка для создания визуально единой секции -->
+<div class="booking-wrapper">
+    <!-- Заголовок страницы с фоном -->
+    <section class="page-header">
+        <!-- Фоновый паттерн -->
+        <div class="header-background"></div>
+        
+        <div class="container">
+            <div class="section-header">
+                <h1 class="section-title">Запись на услуги</h1>
+                <div class="title-decoration">
+                    <span><i class="bi bi-scissors"></i></span>
+                </div>
+                <p class="lead">Выберите удобное время и мастера для вашего преображения</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция записи с фоном -->
+    <section id="booking" class="booking-section">
+        <!-- Фоновый паттерн -->
+        <div class="booking-background"></div>
+        
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card booking-card">
+                        <div class="booking-card-header">
+                            <h4 class="mb-0">Форма записи</h4>
+                        </div>
+                        <div class="card-body p-4">
+                            <!-- Метод POST и CSRF токен -->
+                            <form id="booking-form" action="{% url 'thanks' %}" method="post">
+                                {% csrf_token %}
+                                
+                                <div class="mb-4">
+                                    <label for="clientName" class="form-label">Ваше имя</label>
+                                    <input type="text" class="form-control" id="clientName" name="client_name" required>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label for="clientPhone" class="form-label">Телефон</label>
+                                    <input type="tel" class="form-control" id="clientPhone" name="phone" required>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label for="masterSelect" class="form-label">Выберите мастера</label>
+                                    <select class="form-select" id="masterSelect" name="master_id" required>
+                                        <option value="" {% if not master %}selected{% endif %} disabled>Выберите мастера...</option>
+                                        {% for m in all_masters %}
+                                        <option value="{{ m.id }}" {% if master and master.id == m.id %}selected{% endif %}>
+                                            {{ m.name }} (опыт: {{ m.experience }} 
+                                            {% if m.experience == 1 %}год{% elif 2 <= m.experience <= 4 %}года{% else %}лет{% endif %})
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                                <!-- Контейнер для динамической загрузки услуг мастера -->
+                                <div class="mb-4">
+                                    <label class="form-label">Выберите услуги</label>
+                                    <div id="services-container" class="row g-3">
+                                        {% if master_services %}
+                                            {% for service in master_services %}
+                                            <div class="col-md-6">
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox" name="services[]" 
+                                                        value="{{ service.id }}" id="service{{ service.id }}">
+                                                    <label class="form-check-label" for="service{{ service.id }}">
+                                                        {{ service.name }} - {{ service.price }} руб.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% for service in all_services %}
+                                            <div class="col-md-6">
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox" name="services[]" 
+                                                        value="{{ service.id }}" id="service{{ service.id }}">
+                                                    <label class="form-check-label" for="service{{ service.id }}">
+                                                        {{ service.name }} - {{ service.price }} руб.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <label for="bookingDate" class="form-label">Дата</label>
+                                        <input type="date" class="form-control" id="bookingDate" name="appointment_date" required min="{{ min_date }}">
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="bookingTime" class="form-label">Время</label>
+                                        <select class="form-select" id="bookingTime" name="appointment_time" required>
+                                            <option value="" selected disabled>Выберите время...</option>
+                                            <option value="10:00">10:00</option>
+                                            <option value="11:00">11:00</option>
+                                            <option value="12:00">12:00</option>
+                                            <option value="13:00">13:00</option>
+                                            <option value="14:00">14:00</option>
+                                            <option value="15:00">15:00</option>
+                                            <option value="16:00">16:00</option>
+                                            <option value="17:00">17:00</option>
+                                            <option value="18:00">18:00</option>
+                                            <option value="19:00">19:00</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label for="comment" class="form-label">Комментарий (необязательно)</label>
+                                    <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary w-100 submit-btn">Записаться</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Установка минимальной даты на сегодня
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        let mm = today.getMonth() + 1;
+        let dd = today.getDate();
+
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm;
+
+        const formattedToday = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('bookingDate').min = formattedToday;
+        
+        // Получение URL параметров для предварительного выбора мастера
+        const urlParams = new URLSearchParams(window.location.search);
+        const masterId = urlParams.get('master_id');
+        
+        // Если мастер указан в URL, выбираем его в выпадающем списке
+        if (masterId) {
+            const masterSelect = document.getElementById('masterSelect');
+            if (masterSelect) {
+                masterSelect.value = masterId;
+                // Загружаем услуги выбранного мастера
+                loadMasterServices(masterId);
+            }
+        }
+        
+        // Добавляем обработчик события изменения мастера
+        const masterSelect = document.getElementById('masterSelect');
+        if (masterSelect) {
+            masterSelect.addEventListener('change', function() {
+                const selectedMasterId = this.value;
+                if (selectedMasterId) {
+                    loadMasterServices(selectedMasterId);
+                } else {
+                    // Если мастер не выбран, показываем все услуги
+                    loadAllServices();
+                }
+            });
+        }
+    });
+    
+    // Функция для загрузки услуг выбранного мастера через API
+    function loadMasterServices(masterId) {
+        fetch(`/api/masters/${masterId}/services/`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка при загрузке услуг мастера');
+                }
+                return response.json();
+            })
+            .then(data => {
+                updateServicesContainer(data.services);
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+    }
+    
+    // Функция для загрузки всех услуг
+    function loadAllServices() {
+        // Здесь можно использовать AJAX для получения всех услуг,
+        // или просто показать все услуги, которые уже есть в шаблоне
+        
+        // Пример: если вы хотите использовать AJAX
+        /*
+        fetch('/api/services/')
+            .then(response => response.json())
+            .then(data => {
+                updateServicesContainer(data.services);
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        */
+        
+        // Или можно просто показать все услуги, скрыв их заранее
+        document.querySelectorAll('#services-container .form-check').forEach(checkbox => {
+            checkbox.closest('.col-md-6').style.display = 'block';
+        });
+    }
+    
+    // Функция обновления контейнера с услугами
+    function updateServicesContainer(services) {
+        const container = document.getElementById('services-container');
+        container.innerHTML = ''; // Очищаем контейнер
+        
+        if (services && services.length > 0) {
+            // Добавляем услуги мастера
+            services.forEach(service => {
+                const col = document.createElement('div');
+                col.className = 'col-md-6';
+                col.innerHTML = `
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" name="services[]" 
+                               value="${service.id}" id="service${service.id}">
+                        <label class="form-check-label" for="service${service.id}">
+                            ${service.name} - ${service.price} руб.
+                        </label>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
+        } else {
+            // Если услуг нет, показываем сообщение
+            container.innerHTML = `
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        У выбранного мастера нет доступных услуг.
+                    </div>
+                </div>
+            `;
+        }
+    }
+</script>
+{% endblock %}
