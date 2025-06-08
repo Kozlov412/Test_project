@@ -25,15 +25,16 @@ from core import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
-    # Обновленные маршруты для аутентификации
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='logout.html', next_page='/'), name='logout'),
     # Добавляем новый маршрут для создания услуги:
     path('services/create/', views.service_create, name='service_create'),
     # URL для создания нового мастера
     path('masters/create/', views.master_edit, name='master_create'),
     # URL для редактирования существующего мастера
     path('masters/<int:master_id>/edit/', views.master_edit, name='master_edit'),
+    # Подключаем urls приложения users с использованием namespace
+    path('users/', include('users.urls', namespace='users')),
+    # Другие маршруты
+    path('', include('core.urls')),
     
 ]
 

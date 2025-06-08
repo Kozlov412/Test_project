@@ -519,3 +519,4 @@ def master_services_api(request, master_id):
         return JsonResponse({'services': services_data})
     except Master.DoesNotExist:
         return JsonResponse({'error': 'Мастер не найден'}, status=404)
+    

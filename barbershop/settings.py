@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'core.apps.CoreConfig',
     'django_extensions',
+    'users.apps.UsersConfig',
     
 ]
 
@@ -124,13 +125,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_TZ = True
+
+USE_L10N = True # Используется для форматирования даты и времени
 
 
 # Static files (CSS, JavaScript, Images)
@@ -146,9 +149,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Аутентификация
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'orders_list'
-LOGOUT_REDIRECT_URL = 'landing'
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'landing'  # Перенаправление после успешного входа
+LOGOUT_REDIRECT_URL = 'landing'  # Перенаправление после успешного выхода
 
 
 APPEND_SLASH = True 
