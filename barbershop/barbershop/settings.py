@@ -157,4 +157,22 @@ LOGOUT_REDIRECT_URL = 'landing'  # Перенаправление после у�
 APPEND_SLASH = True 
 
 
+#Добавляем разрешенные хосты для нашего домена и IP
+ALLOWED_HOSTS : list[str] = [
+    'kozlov412-test-project-e3ba.twc1.net',
+    'www.kozlov412-test-project-e3ba.twc1.net',
+    '213.171.6.251', #Публичный IP адрес
+    'localhost', #Локальный IP адрес
+    '127.0.0.1', #Локальный IP адрес
+    '0.0.0.0',
+]
 
+# Настройки безопасности для продакшена 
+# Настройки CSRF для разрешения запросов с нашего домена 
+CSRF_TRUSTED_ORIGINS = [
+    'https://kozlov412-test-project-e3ba.twc1.net',
+    'https://www.kozlov412-test-project-e3ba.twc1.net',
+    'http://kozlov412-test-project-e3ba.twc1.net',
+    'http://www.kozlov412-test-project-e3ba.twc1.net',
+]
+    
