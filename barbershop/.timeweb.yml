@@ -1,0 +1,23 @@
+project:
+  name: Test_project # Имя вашего проекта
+  domain: kozlov412-test-project-e3ba.twc1.net  # Домен
+
+framework: django  # Указываем, что используем Django
+
+env:
+  # Переменные окружения, которые будут доступны в контейнере
+  DEBUG: "False"
+  SECRET_KEY: "your-secure-key-change-me"
+  ALLOWED_HOSTS: "*,localhost,127.0.0.1,.timeweb.ru"
+
+install:
+  # Команды, выполняемые при установке
+  - pip install -r requirements.txt
+
+beforeStart:
+  # Команды перед запуском приложения
+  - sh ./init.sh  # Запуск скрипта инициализации
+
+start:
+  # Команда для запуска приложения
+  - gunicorn barbershop.wsgi:application --bind 0.0.0.0:8000  # модуль WSGI
