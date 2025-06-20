@@ -24,18 +24,21 @@ from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls')),
-    # Добавляем новый маршрут для создания услуги:
-    path('services/create/', views.service_create, name='service_create'),
+    
+    # Заменяем прямые ссылки на функции на классовые представления
+    path('services/create/', views.ServiceCreateView.as_view(), name='service_create'),
+    
     # URL для создания нового мастера
-    path('masters/create/', views.master_edit, name='master_create'),
+    path('masters/create/', views.MasterEditView.as_view(), name='master_create'),
+    
     # URL для редактирования существующего мастера
-    path('masters/<int:master_id>/edit/', views.master_edit, name='master_edit'),
+    path('masters/<int:master_id>/edit/', views.MasterEditView.as_view(), name='master_edit'),
+    
     # Подключаем urls приложения users с использованием namespace
     path('users/', include('users.urls', namespace='users')),
-    # Другие маршруты
-    path('', include('core.urls')),
     
+    # Включаем остальные маршруты из core.urls (уберите дублирующую строку!)
+    path('', include('core.urls')),
 ]
 
 # Для отображения медиа и статических файлов в режиме разработки

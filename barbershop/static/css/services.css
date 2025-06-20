@@ -248,13 +248,13 @@ body::before {
     /* Принудительное центрирование модального окна */
     text-align: center !important;
     padding-right: 0 !important;
-    margin-top: 200px !important;
-    margin-left: 800px !important;
+    margin-top: 0px !important;
+    margin-left: 600px !important;
 }
 
 
 .modal-dialog {
-    max-width: 700px !important; 
+    max-width: 800px !important; 
     margin: 1.75rem auto !important; 
     display: inline-block !important;
     text-align: left !important;

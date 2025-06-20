@@ -2,22 +2,30 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.landing, name='landing'),
-    path('services/', views.services_page, name='services'),
-    path('thanks/', views.thanks, name='thanks'),
-    path('orders/', views.orders_list, name='orders_list'),
-    path('orders/<int:order_id>/', views.order_detail, name='order_detail'),
-    path('api/masters/<int:master_id>/', views.master_detail_api, name='master_detail_api'),
-    path('booking/', views.booking, name='booking'),
-    path('api/masters/<int:master_id>/services/', views.master_services_api, name='master_services_api'),
-    path('services/create/', views.service_create, name='service_create'),
-    # Новые маршруты для отзывов
-    path('reviews/create/', views.create_review, name='create_review'),
-    path('reviews/thanks/', views.review_thanks, name='review_thanks'),
-    path('api/master-info/', views.get_master_info, name='get_master_info'),
+    # Основные страницы
+    path('', views.LandingPageView.as_view(), name='landing'),
+    path('services/', views.ServicesListView.as_view(), name='services'),
+    path('thanks/', views.ThanksView.as_view(), name='thanks'),
+    
+    # Заказы
+    path('orders/', views.OrdersListView.as_view(), name='orders_list'),
+    path('orders/<int:order_id>/', views.OrderDetailView.as_view(), name='order_detail'),
+    
+    # API для мастеров
+    path('api/masters/<int:master_id>/', views.MasterDetailApiView.as_view(), name='master_detail_api'),
+    path('booking/', views.BookingView.as_view(), name='booking'),
+    path('api/masters/<int:master_id>/services/', views.MasterServicesAjaxView.as_view(), name='master_services_api'),
+    
+    # Services
+    path('services/create/', views.ServiceCreateView.as_view(), name='service_create'),
+    
+    # Отзывы
+    path('reviews/create/', views.ReviewCreateView.as_view(), name='create_review'),
+    path('reviews/thanks/', views.ReviewThanksView.as_view(), name='review_thanks'),
+    path('api/master-info/', views.MasterInfoAjaxView.as_view(), name='get_master_info'),
 
     # API автозаполнения
-    path('api/autocomplete/client-name/', views.client_name_autocomplete, name='client_name_autocomplete'),
-    path('api/autocomplete/phone/', views.phone_autocomplete, name='phone_autocomplete'),
-    path('api/autocomplete/comment/', views.comment_autocomplete, name='comment_autocomplete'),
+    path('api/autocomplete/client-name/', views.ClientNameAutocompleteView.as_view(), name='client_name_autocomplete'),
+    path('api/autocomplete/phone/', views.PhoneAutocompleteView.as_view(), name='phone_autocomplete'),
+    path('api/autocomplete/comment/', views.CommentAutocompleteView.as_view(), name='comment_autocomplete'),
 ]

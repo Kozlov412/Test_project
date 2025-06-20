@@ -25,9 +25,9 @@ curl -sSL https://install.python-poetry.org | python3 -
 poetry install
 
 # Активация виртуального окружения
-poetry shell
+poetry env activate
 
-3. Альтернативная установка через pip
+1. Альтернативная установка через pip
 bash
 # Создание виртуального окружения
 python -m venv venv
