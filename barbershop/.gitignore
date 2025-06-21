@@ -10,3 +10,6 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 media/
+# Кроме папок с изображениями мастеров и услуг
+!media/masters/
+!media/services/
