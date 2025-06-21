@@ -50,9 +50,19 @@ class ThanksView(TemplateView):
     """Классовое представление для страницы благодарности после заявки"""
     template_name = 'core/thanks.html'
     
+    def post(self, request, *args, **kwargs):
+        # Для POST-запросов делаем то же самое, что и для GET
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        source = kwargs.get('source', self.request.GET.get('source', ''))
+        
+        # Проверяем наличие source в параметрах запроса или POST-данных
+        source = self.kwargs.get('source', '')
+        if not source:
+            # Проверяем как в GET так и в POST параметрах
+            source = self.request.GET.get('source', self.request.POST.get('source', ''))
         
         if source == 'order':
             context['message'] = 'Спасибо за ваш заказ! Мы свяжемся с вами в ближайшее время.'

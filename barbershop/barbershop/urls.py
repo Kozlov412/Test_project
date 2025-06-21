@@ -37,7 +37,7 @@ urlpatterns = [
     # Подключаем urls приложения users с использованием namespace
     path('users/', include('users.urls', namespace='users')),
     
-    # Включаем остальные маршруты из core.urls (уберите дублирующую строку!)
+    # Включаем остальные маршруты из core.urls 
     path('', include('core.urls')),
 ]
 
