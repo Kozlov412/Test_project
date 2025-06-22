@@ -161,6 +161,8 @@ APPEND_SLASH = True
 ALLOWED_HOSTS : list[str] = [
     'kozlov412-test-project-e3ba.twc1.net',
     'www.kozlov412-test-project-e3ba.twc1.net',
+    'steelbeard-barbershop.ru',  # Новый домен 
+    'www.steelbeard-barbershop.ru',
     '213.171.6.251', #Публичный IP адрес
     'localhost', #Локальный IP адрес
     '127.0.0.1', #Локальный IP адрес
