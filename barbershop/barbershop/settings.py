@@ -176,5 +176,10 @@ CSRF_TRUSTED_ORIGINS = [
     'https://www.kozlov412-test-project-e3ba.twc1.net',
     'http://kozlov412-test-project-e3ba.twc1.net',
     'http://www.kozlov412-test-project-e3ba.twc1.net',
+    'https://steelbeard-barbershop.ru',
+    'https://steelbeard-barbershop.ru',
+    'http://steelbeard-barbershop.ru',
+    'http://steelbeard-barbershop.ru',
+
 ]
     
