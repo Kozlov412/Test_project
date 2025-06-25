@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, TemplateView
 
 from .forms import UserLoginForm, UserRegisterForm
 
@@ -95,6 +96,7 @@ class UserLogoutView(LogoutView):
     Представление (CBV) для выхода пользователей из системы.
     """
     next_page = reverse_lazy('landing')
+    template_name = 'users/logout.html'  # Добавляем шаблон для страницы выхода
     
     def dispatch(self, request, *args, **kwargs):
         """
@@ -103,3 +105,20 @@ class UserLogoutView(LogoutView):
         if request.user.is_authenticated:
             messages.info(request, 'Вы успешно вышли из системы!')
         return super().dispatch(request, *args, **kwargs)
+
+
+class UserProfileView(LoginRequiredMixin, TemplateView):
+    """
+    Представление (CBV) для профиля пользователя.
+    Требует аутентификации пользователя.
+    """
+    template_name = 'users/profile.html'
+    login_url = 'users:login'
+    
+    def get_context_data(self, **kwargs):
+        """
+        Добавление дополнительного контекста для шаблона.
+        """
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Мой профиль'
+        return context
