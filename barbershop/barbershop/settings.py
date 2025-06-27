@@ -32,7 +32,7 @@ TELEGRAM_ADMIN_CHAT_ID = os.getenv('TELEGRAM_ADMIN_CHAT_ID')
 # URL сайта для формирования полных URL в уведомлениях
 SITE_URL = os.getenv('SITE_URL', 'http://localhost:8000')
 SITE_ID = 1
-
+SITE_DOMAIN = '127.0.0.1:8000'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -153,9 +153,20 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'landing'  # Перенаправление после успешного входа
 LOGOUT_REDIRECT_URL = 'landing'  # Перенаправление после успешного выхода
 
+# Аутентификация по email или username
+AUTHENTICATION_BACKENDS = [
+    'users.backends.EmailOrUsernameModelBackend',
+    'django.contrib.auth.backends.ModelBackend',  # Оставляем стандартный бэкенд как запасной
+]
 
-APPEND_SLASH = True 
-
+# Настройка для вывода email в консоль (для восстановления пароля)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '' 
+EMAIL_HOST_PASSWORD = '' 
+DEFAULT_FROM_EMAIL = 'Барбершоп "Стальная Борода" <noreply@barbershop.com>'
 
 #Добавляем разрешенные хосты для нашего домена и IP
 ALLOWED_HOSTS : list[str] = [

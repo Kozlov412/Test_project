@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="profile-update-wrapper">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <!-- Форма заголовок -->
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 class="mb-0">Редактирование профиля</h3>
+                            <a href="{% url 'users:profile_detail' request.user.profile.pk %}" class="btn btn-sm btn-light">
+                                <i class="bi bi-arrow-left me-1"></i>Вернуться к профилю
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Форма редактирования -->
+                    <div class="card-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <form method="post" enctype="multipart/form-data" class="profile-update-form">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <!-- Аватар и основная информация о пользователе -->
+                                <div class="col-md-4 text-center mb-4">
+                                    <div class="profile-avatar-container mb-3">
+                                        {% if request.user.profile.avatar %}
+                                            <img src="{{ request.user.profile.avatar.url }}" alt="Аватар" class="img-fluid rounded-circle">
+                                        {% else %}
+                                            <img src="{% static 'img/default-avatar.png' %}" alt="Аватар по умолчанию" class="img-fluid rounded-circle">
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="{{ profile_form.avatar.id_for_label }}" class="form-label">{{ profile_form.avatar.label }}</label>
+                                        {{ profile_form.avatar }}
+                                        
+                                        {% if profile_form.avatar.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ profile_form.avatar.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <!-- Основная форма -->
+                                <div class="col-md-8">
+                                    <h5 class="border-bottom pb-2 mb-3">Основная информация</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label for="{{ user_form.username.id_for_label }}" class="form-label">{{ user_form.username.label }}</label>
+                                        {{ user_form.username }}
+                                        
+                                        {% if user_form.username.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ user_form.username.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="{{ user_form.email.id_for_label }}" class="form-label">{{ user_form.email.label }}</label>
+                                        {{ user_form.email }}
+                                        
+                                        {% if user_form.email.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ user_form.email.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ user_form.first_name.id_for_label }}" class="form-label">{{ user_form.first_name.label }}</label>
+                                            {{ user_form.first_name }}
+                                            
+                                            {% if user_form.first_name.errors %}
+                                                <div class="invalid-feedback d-block">
+                                                    {{ user_form.first_name.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ user_form.last_name.id_for_label }}" class="form-label">{{ user_form.last_name.label }}</label>
+                                            {{ user_form.last_name }}
+                                            
+                                            {% if user_form.last_name.errors %}
+                                                <div class="invalid-feedback d-block">
+                                                    {{ user_form.last_name.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="{{ profile_form.birth_date.id_for_label }}" class="form-label">{{ profile_form.birth_date.label }}</label>
+                                        {{ profile_form.birth_date }}
+                                        
+                                        {% if profile_form.birth_date.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ profile_form.birth_date.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <h5 class="border-bottom pb-2 mb-3 mt-4">Социальные сети</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label for="{{ profile_form.telegram_id.id_for_label }}" class="form-label">{{ profile_form.telegram_id.label }}</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">@</span>
+                                            {{ profile_form.telegram_id }}
+                                        </div>
+                                        
+                                        {% if profile_form.telegram_id.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ profile_form.telegram_id.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="{{ profile_form.vk_id.id_for_label }}" class="form-label">{{ profile_form.vk_id.label }}</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">vk.com/</span>
+                                                    {{ profile_form.vk_id }}
+                                                </div>
+    
+                                        {% if profile_form.vk_id.errors %}
+                                    <div class="invalid-feedback d-block">
+                                {{ profile_form.vk_id.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary px-5">
+                                    <i class="bi bi-save me-2"></i>Сохранить изменения
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
